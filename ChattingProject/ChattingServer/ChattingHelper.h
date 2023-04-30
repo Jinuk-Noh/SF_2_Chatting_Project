@@ -4,11 +4,13 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+#include "DBHelper.h"
 #include <WinSock2.h>
 #include <string>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <sstream>
 
 #define MAX_SIZE 1024
 #define MAX_CLIENT 1
@@ -153,8 +155,10 @@ void db_server_init() {
 
 	dbServer_sock.content = "dbServer";
 
-	cout << "DB Server On" << endl;
+	//cout << "DB Server On" << endl; //확인 용
 }
+
+string GetUser(string comm, std::vector<string>* v);
 
 void RunDB() {
 
@@ -178,7 +182,20 @@ void RunDB() {
 			recv(new_client.sck, buf, MAX_SIZE, 0);
 
 			new_client.content = string(buf);
-			string msg = new_client.content;
+
+			//로그인
+			string comm = buf;
+			
+			std::vector<string> v ;
+
+			string msg;
+
+			if (comm.find("login") == 0) {
+				msg = GetUser(comm, &v);
+			}
+
+			//string msg = msg = id + "|" + pw;;
+			//로그인 끝
 			send(new_client.sck, msg.c_str(), MAX_SIZE, 0);
 
 			closesocket(new_client.sck);
@@ -188,7 +205,19 @@ void RunDB() {
 		cout << "DB 소켓 종료. (Error code : " << code << ")";
 	}
 
+	//cout << "소켓 통신 종료"<< endl;
 	WSACleanup();
 }
+
+string GetUser(string comm, std::vector<string>* v) {
+	std::stringstream ss(comm);
+	while (getline(ss, comm, '|')) {
+		v->push_back(comm);
+		//cout << v[v.size() -1] << endl;  // 확인용
+	}
+
+	return GetUserInfo(DBHelper::CreateInstance(), v->at(1).c_str(), v->at(2).c_str());
+}
+
 #pragma endregion
 #endif // !__CHATTING_HELPER_H__
