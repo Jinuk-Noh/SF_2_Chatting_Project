@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChattingServer", "ChattingServer\ChattingServer.vcxproj", "{3FCEE1CA-5788-4972-9713-F742DBCE7624}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChattingClient", "ChattingClient\ChattingClient.vcxproj", "{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{3FCEE1CA-5788-4972-9713-F742DBCE7624}.Release|x64.Build.0 = Release|x64
 		{3FCEE1CA-5788-4972-9713-F742DBCE7624}.Release|x86.ActiveCfg = Release|Win32
 		{3FCEE1CA-5788-4972-9713-F742DBCE7624}.Release|x86.Build.0 = Release|Win32
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Debug|x64.ActiveCfg = Debug|x64
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Debug|x64.Build.0 = Debug|x64
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Debug|x86.Build.0 = Debug|Win32
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Release|x64.ActiveCfg = Release|x64
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Release|x64.Build.0 = Release|x64
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Release|x86.ActiveCfg = Release|Win32
+		{FD70EFFE-BD8E-4831-B6F6-0D763AFCC960}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

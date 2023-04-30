@@ -6,7 +6,9 @@
 #include <mysql/jdbc.h>
 #include <string>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
 const string server = "tcp://127.0.0.1:3306"; // 데이터베이스 주소
 const string username = "root";//"chatUser"; // 데이터베이스 사용자
@@ -76,6 +78,7 @@ public:
 			" ON UPDATE CASCADE"
 			" ON DELETE CASCADE"
 			");";
+		
 		stmt->execute(query);
 
 		//cout << "Finished creating table" << endl;
