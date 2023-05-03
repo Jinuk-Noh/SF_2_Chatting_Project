@@ -1,24 +1,27 @@
+#pragma comment(lib, "ws2_32.lib")
+#include <WinSock2.h> //Winsock ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ include. WSADATA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#include <WS2tcpip.h>
 #include <iostream>
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <thread>
 #include <vector>
 
 #include "User.h"
 #include "Chatting.h"
 
+#define MAX_SIZE 1024
 using namespace std;
-
-string GetCommNum();
-
+SOCKET client_sock;
+int CheckIdInfo();
 int main() {
 	while (1) {
 		cout << "------------------------------" << endl;
-		cout << "1 : ·Î±×ÀÎ" << endl;
-		cout << "2 : È¸¿ø°¡ÀÔ" << endl;
-		cout << "3 : Ã¤ÆÃ¹æ ÀÔÀå" << endl;
+		cout << "1 : ï¿½Î±ï¿½ï¿½ï¿½" << endl;
+		cout << "2 : È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
+		cout << "3 : Ã¤ï¿½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½" << endl;
 		cout << "------------------------------" << endl;
-		cout << "ÀÔ·Â : ";
+		cout << "ï¿½Ô·ï¿½ : ";
 
 		int commNum = stoi(GetCommNum());
 
@@ -30,7 +33,7 @@ int main() {
 		case 2:
 			break;
 		case 3:
-			if (userInfo.id == "") cout << "·Î±×ÀÎ ÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << endl;
+			if (userInfo.id == "") cout << "ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½." << endl;
 			Chatting();
 			break;
 		default:
@@ -44,7 +47,7 @@ string GetCommNum() {
 	do {
 		cin >> input;
 		if (input != "1" && input != "2" && input != "3") {
-			cout << "1 ~ 3 ¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ";
+			cout << "1 ~ 3 ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ : ";
 		}
 	} while (input != "1" 
 		&& input != "2"
