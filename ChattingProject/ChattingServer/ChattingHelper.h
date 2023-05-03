@@ -183,6 +183,12 @@ void RunDB() {
 
 			new_client.content = string(buf);
 
+
+			//if
+			// 회원가입 중복체크
+		    //else if 
+
+
 			//로그인
 			string comm = buf;
 			
