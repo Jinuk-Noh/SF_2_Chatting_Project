@@ -143,6 +143,22 @@ bool UserDupleCheck(DBHelper* dbHelper, const char* id) {
 
 	return (cnt > 0);
 }
+
+const char* GetUserInfo(DBHelper* dbHelper, const char* id, const char*pw) {
+	string query = "SELECT id, name FROM User WHERE id =? AND pw =?";
+	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
+	pstmt->setString(1, id);
+	pstmt->setString(2, pw);
+	sql::ResultSet* result = pstmt->executeQuery();
+
+	string resultStr = "";
+	while (result->next()) {
+		resultStr = result->getString(1) + "|" + result->getString(2);
+	}
+
+	return resultStr.c_str();
+
+}
 #pragma endregion
 
 #pragma region UPDATE
