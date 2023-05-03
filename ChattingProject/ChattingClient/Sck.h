@@ -11,10 +11,20 @@
 using namespace std;
 
 SOCKET db_sock;
+SOCKET chat_sock;
 SOCKADDR_IN ConnectDBSck() {
 	SOCKADDR_IN client_addr = {};
 	client_addr.sin_family = AF_INET;
 	client_addr.sin_port = htons(7720);
+	InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
+
+	return client_addr;
+}
+
+SOCKADDR_IN ConnectChattSck() {
+	SOCKADDR_IN client_addr = {};
+	client_addr.sin_family = AF_INET;
+	client_addr.sin_port = htons(7718);
 	InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
 
 	return client_addr;
