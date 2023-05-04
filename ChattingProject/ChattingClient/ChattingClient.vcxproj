@@ -130,6 +130,7 @@
     <ClCompile Include="ChattingClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chatting.h" />
     <ClInclude Include="temp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
