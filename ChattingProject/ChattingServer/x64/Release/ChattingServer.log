@@ -1,11 +1,10 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(503,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
   ChattingServer.cpp
-C:\Users\o\Desktop\github\SF_2_Chatting_Project\ChattingProject\ChattingServer\DBHelper.h(25,27): warning C4101: 'pstmt' :참조되지 않은 지역 변수입니다.
+C:\Users\o\Desktop\github\SF_2_Chatting_Project - 백업본\ChattingProject\ChattingServer\DBHelper.h(25,27): warning C4101: 'pstmt' :참조되지 않은 지역 변수입니다.
      C:\Users\o\Desktop\github\SF_2_Chatting_Project\mysql-8.0.32\ChattingServer.lib 라이브러리 및 C:\Users\o\Desktop\github\SF_2_Chatting_Project\mysql-8.0.32\ChattingServer.exp 개체를 생성하고 있습니다.
   코드를 생성하고 있습니다.
-  2 of 398 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 398 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   코드를 생성했습니다.
 mysqlcppconn-static.lib(mysql_driver.obj) : warning LNK4099: '' PDB를 'mysqlcppconn-static.lib(mysql_driver.obj)' 또는 ''에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 mysqlcppconn-static.lib(mysql_connection.obj) : warning LNK4099: '' PDB를 'mysqlcppconn-static.lib(mysql_connection.obj)' 또는 ''에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
