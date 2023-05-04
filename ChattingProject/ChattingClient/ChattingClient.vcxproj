@@ -130,8 +130,7 @@
     <ClCompile Include="ChattingClient.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sck.h" />
-    <ClInclude Include="User.h" />
+    <ClInclude Include="temp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
