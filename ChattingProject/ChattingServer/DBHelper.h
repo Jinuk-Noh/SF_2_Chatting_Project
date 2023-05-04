@@ -41,9 +41,9 @@ private:
 		stmt->execute("set names euckr");
 		if (stmt) { delete stmt; stmt = nullptr; }
 	}
-	
+
 public:
-	static DBHelper*  CreateInstance() {
+	static DBHelper* CreateInstance() {
 		if (dbHelper == nullptr) {
 			dbHelper = new DBHelper;
 		}
@@ -53,7 +53,7 @@ public:
 
 	//처음 DB에 테이블을 생성할 때 사용
 	void InitTable() {
-		
+
 		string query = "";
 
 		sql::Statement* stmt;
@@ -78,7 +78,7 @@ public:
 			" ON UPDATE CASCADE"
 			" ON DELETE CASCADE"
 			");";
-		
+
 		stmt->execute(query);
 
 		//cout << "Finished creating table" << endl;
@@ -108,7 +108,7 @@ public:
 	// SelectQueryPSTMT인자로 전달하기 위해 사용
 	sql::PreparedStatement* CreatePreoaredStatement(string query) {
 		sql::PreparedStatement* pstmt = con->prepareStatement(query);
-		
+
 		return pstmt;
 	}
 };
@@ -120,14 +120,14 @@ void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
 
 	if (dbHelper != nullptr) {
-		
-		delete dbHelper;		
+
+		delete dbHelper;
 		dbHelper = nullptr;
 	}
 }
 
 #pragma region SELECT
-bool UserDupleCheck(DBHelper* dbHelper, const char* id) {
+string UserDupleCheck(DBHelper* dbHelper, const char* id) {
 
 	string query = "SELECT COUNT(*) FROM User WHERE id = ?";
 	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
@@ -141,24 +141,16 @@ bool UserDupleCheck(DBHelper* dbHelper, const char* id) {
 
 	delete pstmt;
 
-	return (cnt > 0);
-}
-
-const char* GetUserInfo(DBHelper* dbHelper, const char* id, const char*pw) {
-	string query = "SELECT id, name FROM User WHERE id =? AND pw =?";
-	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
-	pstmt->setString(1, id);
-	pstmt->setString(2, pw);
-	sql::ResultSet* result = pstmt->executeQuery();
-
-	string resultStr = "";
-	while (result->next()) {
-		resultStr = result->getString(1) + "|" + result->getString(2);
+	if (cnt > 0) {
+		return "true";
 	}
-
-	return resultStr.c_str();
-
+	else {
+		return "false";
+	}
 }
+
+
+
 #pragma endregion
 
 #pragma region UPDATE
@@ -169,6 +161,20 @@ const char* GetUserInfo(DBHelper* dbHelper, const char* id, const char*pw) {
 
 #pragma endregion
 
+#pragma region INSERT
 
+void UploadSignUp(DBHelper* dbHelper, const char* id, const char* pw, const char* name) {
+
+	string query = "INSERT INTO User (id, pw, name) VALUES(?,?,?)";
+	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
+	pstmt->setString(1, id);
+	pstmt->setString(2, pw);
+	pstmt->setString(3, name);
+	sql::ResultSet* result = pstmt->executeQuery();
+
+	delete pstmt;
+}
+
+#pragma endregion
 
 #endif // !__
