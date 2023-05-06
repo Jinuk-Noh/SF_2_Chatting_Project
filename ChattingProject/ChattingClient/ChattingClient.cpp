@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <thread>
 #include <vector>
 
 #include "User.h"
@@ -13,11 +12,12 @@ string GetCommNum();
 int main() {
 	while (1) {
 		cout << "------------------------------" << endl;
-		cout << "1: ·Î±×ÀÎ" << endl;
-		cout << "2: È¸¿ø °¡ÀÔ" << endl;
-		cout << "3: Ã¤ÆÃ µé¾î°¡±â" << endl;
+		cout << "1: ë¡œê·¸ì¸" << endl;
+		cout << "2: íšŒì› ê°€ìž…" << endl;
+		cout << "3: ì±„íŒ… ë“¤ì–´ê°€ê¸°" << endl;
 		cout << "------------------------------"<<endl;
-		cout << "ÀÔ·Â: ";
+		cout << "ìž…ë ¥: ";
+
 
 		int commNum = stoi(GetCommNum());
 
@@ -30,7 +30,10 @@ int main() {
 			SignUp();
 			break;
 		case 3:
-			if (userInfo.id == "") cout << "Ã¤ÆÃ µé¾î°¡±â" << endl;
+			if (userInfo.id == "") {
+				cout << "ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”" << endl;
+				continue;
+			}
 			Chatting();
 			break;
 		default:
@@ -44,7 +47,7 @@ string GetCommNum() {
 	do {
 		cin >> input;
 		if (input != "1" && input != "2" && input != "3") {
-			cout << "1 ~ 3 ÀÌ³»ÀÇ ¼ö¸¦ ÀÔ·ÂÇØÁÖ½Ê½Ã¿À: ";
+			cout << "1 ~ 3 ìž…ë ¥í•´ì£¼ì„¸ìš” : ";
 		}
 	} while (input != "1" 
 		&& input != "2"

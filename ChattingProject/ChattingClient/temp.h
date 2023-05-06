@@ -3,7 +3,7 @@
 #define __TEMP_H__
 
 #pragma comment(lib, "ws2_32.lib")
-#include <WinSock2.h> //Winsock Çì´õÆÄÀÏ include. WSADATA µé¾îÀÖÀ½.
+#include <WinSock2.h> //Winsock í—¤ë”íŒŒì¼ include. WSADATA ë“¤ì–´ìˆìŒ.
 #include <WS2tcpip.h>
 #include <iostream>
 
@@ -63,7 +63,7 @@ void SignUp() {
 
 	string anyKey = "";
 	while (1) {
-		cout << "»ç¿ëÇÒ ID¸¦ ÀÔ·ÂÇØÁÖ½Ê½Ã¿À: ";
+		cout << "ì‚¬ìš©í•  IDë¥¼ ì…ë ¥í•´ì£¼ì‹­ì‹œì˜¤: ";
 		cin >> id;
 		cout << "------------------------------" << endl;
 		cout << endl;
@@ -77,23 +77,23 @@ void SignUp() {
 			closesocket(client_sock);
 			WSACleanup();
 			if (check < 0) {
-				cout << "¼­¹ö¿¡ ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù. Àç½Ãµµ ÇØÁÖ½Ê½Ã¿À." << endl;
+				cout << "ì„œë²„ì— ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤. ì¬ì‹œë„ í•´ì£¼ì‹­ì‹œì˜¤." << endl;
 			}
 			else {
 				if (check == 0) {
 					while (1) {
 						int i = 0;
-						cout << "»ç¿ëÇÒ ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ½Ê½Ã¿À: ";
+						cout << "ì‚¬ìš©í•  ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì‹­ì‹œì˜¤: ";
 						PwCheck(pw);
-						cout << endl << "ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ½Ê½Ã¿À: ";
+						cout << endl << "ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì‹­ì‹œì˜¤: ";
 						PwCheck(pw_1);
 			
 						if (pw!=pw_1) {
-							cout << endl << "ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£°¡ ¼­·Î ´Ù¸¨´Ï´Ù! \n´Ù½Ã ÀÔ·ÂÇØÁÖ½Ê½Ã¿À." << endl << endl;
+							cout << endl << "ì…ë ¥í•œ ë¹„ë°€ë²ˆí˜¸ê°€ ì„œë¡œ ë‹¤ë¦…ë‹ˆë‹¤! \në‹¤ì‹œ ì…ë ¥í•´ì£¼ì‹­ì‹œì˜¤." << endl << endl;
 							continue;
 						}
 						else {
-							cout << endl << "»ç¿ëÇÒ ´Ğ³×ÀÓÀ» ÀÔ·ÂÇØ ÁÖ½Ê½Ã¿À: ";
+							cout << endl << "ì‚¬ìš©í•  ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ ì£¼ì‹­ì‹œì˜¤: ";
 							cin >> name;
 							string uploadSignUp = "upload|" + id + "|" + pw + "|" + name;
 							int code = WSAStartup(MAKEWORD(2, 2), &wsa);
@@ -108,16 +108,17 @@ void SignUp() {
 					}
 				}
 				else {
-					cout << "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµğÀÔ´Ï´Ù. ´Ù¸¥ ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ½Ê½Ã¿À."<<endl;
+					cout << "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤. ë‹¤ë¥¸ ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì‹­ì‹œì˜¤."<<endl;
 					continue;
 				}
 			}
 		}
-		cout << "È¸¿ø°¡ÀÔ ¿Ï·á!"<<endl;
-		cout << "°è¼ÓÇÏ·Á¸é ¾Æ¹«Å°¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À.";
+		cout << "íšŒì›ê°€ì… ì™„ë£Œ!"<<endl;
+		cout << "ê³„ì†í•˜ë ¤ë©´ ì•„ë¬´í‚¤ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤.";
 		cin >> anyKey;
 		system("cls");
 		break;
 	}
 }
 #endif // !__TEMP_H__
+

@@ -5,14 +5,15 @@
 #include <iostream>
 #include <mysql/jdbc.h>
 #include <string>
+#include <vector>
 
 using std::cout;
 using std::endl;
 using std::string;
 
-const string server = "tcp://127.0.0.1:3306"; // µ¥ÀÌÅÍº£ÀÌ½º ÁÖ¼Ò
-const string username = "root";//"chatUser"; // µ¥ÀÌÅÍº£ÀÌ½º »ç¿ëÀÚ
-const string password = "1234"; // µ¥ÀÌÅÍº£ÀÌ½º Á¢¼Ó ºñ¹Ğ¹øÈ£
+const string server = "tcp://127.0.0.1:3306"; // ë°ì´í„°ë² ì´ìŠ¤ ì£¼ì†Œ
+const string username = "root";//"chatUser"; // ë°ì´í„°ë² ì´ìŠ¤ ì‚¬ìš©ì
+const string password = "1234"; // ë°ì´í„°ë² ì´ìŠ¤ ì ‘ì† ë¹„ë°€ë²ˆí˜¸
 
 class DBHelper {
 private:
@@ -33,10 +34,10 @@ private:
 			exit(1);
 		}
 
-		// µ¥ÀÌÅÍº£ÀÌ½º ¼±ÅÃ
+		// ë°ì´í„°ë² ì´ìŠ¤ ì„ íƒ
 		con->setSchema("ChattingDB");
 
-		// db ÇÑ±Û ÀúÀåÀ» À§ÇÑ ¼ÂÆÃ 
+		// db í•œê¸€ ì €ì¥ì„ ìœ„í•œ ì…‹íŒ… 
 		stmt = con->createStatement();
 		stmt->execute("set names euckr");
 		if (stmt) { delete stmt; stmt = nullptr; }
@@ -51,7 +52,7 @@ public:
 		return dbHelper;
 	}
 
-	//Ã³À½ DB¿¡ Å×ÀÌºíÀ» »ı¼ºÇÒ ¶§ »ç¿ë
+	//ì²˜ìŒ DBì— í…Œì´ë¸”ì„ ìƒì„±í•  ë•Œ ì‚¬ìš©
 	void InitTable() {
 
 		string query = "";
@@ -61,7 +62,7 @@ public:
 
 		//cout << "Creating table..." << endl;
 
-		//User Table »ı¼º
+		//User Table ìƒì„±
 		query = "CREATE TABLE IF NOT EXISTS User ( \
 			 id VARCHAR(20) PRIMARY KEY \
 			,pw VARCHAR(10) NOT NULL \
@@ -69,7 +70,7 @@ public:
 			);";
 		stmt->execute(query);
 
-		// Chatting Table »ı¼º
+		// Chatting Table ìƒì„±
 		query = "CREATE TABLE IF NOT EXISTS Chatting_Log("
 			"id VARCHAR(20) NOT NULL"
 			", content VARCHAR(400) NOT NULL"
@@ -98,14 +99,14 @@ public:
 		return result;
 	}
 
-	// PreparedStatement´Â ? °ªÀ» ³Ö¾îÁà¾ßÇØ¼­ ÀÎÀÚ·Î Àü´Ş¹ŞÀ½
+	// PreparedStatementëŠ” ? ê°’ì„ ë„£ì–´ì¤˜ì•¼í•´ì„œ ì¸ìë¡œ ì „ë‹¬ë°›ìŒ
 	sql::ResultSet* SelectQueryPSTMT(sql::PreparedStatement* pstmt) {
 		sql::ResultSet* result = pstmt->executeQuery();
 
 		return result;
 	}
 
-	// SelectQueryPSTMTÀÎÀÚ·Î Àü´ŞÇÏ±â À§ÇØ »ç¿ë
+	// SelectQueryPSTMTì¸ìë¡œ ì „ë‹¬í•˜ê¸° ìœ„í•´ ì‚¬ìš©
 	sql::PreparedStatement* CreatePreoaredStatement(string query) {
 		sql::PreparedStatement* pstmt = con->prepareStatement(query);
 
@@ -115,7 +116,7 @@ public:
 
 DBHelper* DBHelper::dbHelper = nullptr;
 
-//Server Á¾·á ½Ã DBHelper ÀÚ¿øÇØÁ¦
+//Server ì¢…ë£Œ ì‹œ DBHelper ìì›í•´ì œ
 void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
 
@@ -148,19 +149,55 @@ string UserDupleCheck(DBHelper* dbHelper, const char* id) {
 		return "false";
 	}
 }
+
+
 string GetUserInfo(DBHelper* dbHelper, const char* id, const char* pw) {
 	string query = "SELECT id, name FROM User WHERE id =? AND pw =?";
 	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
 	pstmt->setString(1, id);
 	pstmt->setString(2, pw);
 	sql::ResultSet* result = pstmt->executeQuery();
+
+
 	string resultStr = "";
 	while (result->next()) {
 		resultStr = result->getString(1) + "|" + result->getString(2);
 	}
+
+
+	ReleaseDBHelper();
+
 	return resultStr;
 }
 
+std::vector<string> GetChattingLog(DBHelper* dbHelper) {
+	std::vector<string> v;
+	string query = "SELECT content FROM "
+		" ( "
+		" SELECT concat(u.name, \"(\", l.id, \") : \", l.content, \" - [\", l.date, \"]\") AS content, l.date "
+		" FROM chatting_log l "
+		" LEFT JOIN user u "
+		" ON l.id = u.id "
+		" ORDER BY l.date DESC "
+		" LIMIT 10 "
+		" ) A "
+		" ORDER BY date ASC;"
+		;
+
+	sql::ResultSet* result =  dbHelper->SelectQuerySTMT(query);
+
+	v.push_back("----------ì´ì „ ì±„íŒ…----------");
+
+	while (result->next()) {
+		v.push_back(result->getString(1));
+	}
+
+	v.push_back("");
+
+	ReleaseDBHelper();
+
+	return v;
+}
 
 #pragma endregion
 
@@ -184,6 +221,22 @@ void UploadSignUp(DBHelper* dbHelper, const char* id, const char* pw, const char
 	sql::ResultSet* result = pstmt->executeQuery();
 
 	delete pstmt;
+
+	ReleaseDBHelper();
+}
+
+void InsertChatLog(DBHelper* dbHelper, const char* id, const char* content, const char* date) {
+	string query = "INSERT INTO Chatting_Log VALUE (?, ?, ?)";
+	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
+	pstmt->setString(1, id);
+	pstmt->setString(2, content);
+	pstmt->setString(3, date);
+
+	pstmt->execute();
+
+	delete pstmt;
+
+	ReleaseDBHelper();
 }
 
 #pragma endregion
