@@ -5,18 +5,19 @@
 
 #include "User.h"
 #include "Chatting.h"
+#include "temp.h"
 
-#define MAX_SIZE 1024
 using namespace std;
 string GetCommNum();
 int main() {
 	while (1) {
 		cout << "------------------------------" << endl;
-		cout << "1 : ·Î±×ÀÎ" << endl;
-		cout << "2 : È¸¿ø°¡ÀÔ" << endl;
-		cout << "3 : Ã¤ÆÃ µé¾î°¡±â" << endl;
-		cout << "------------------------------" << endl;
-		cout << "ÀÔ·Â : ";
+		cout << "1: ë¡œê·¸ì¸" << endl;
+		cout << "2: íšŒì› ê°€ìž…" << endl;
+		cout << "3: ì±„íŒ… ë“¤ì–´ê°€ê¸°" << endl;
+		cout << "------------------------------"<<endl;
+		cout << "ìž…ë ¥: ";
+
 
 		int commNum = stoi(GetCommNum());
 
@@ -26,10 +27,11 @@ int main() {
 			Login();
 			break;
 		case 2:
+			SignUp();
 			break;
 		case 3:
 			if (userInfo.id == "") {
-				cout << "·Î±×ÀÎÀ» ÇØÁÖ¼¼¿ä" << endl;
+				cout << "ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”" << endl;
 				continue;
 			}
 			Chatting();
@@ -45,7 +47,7 @@ string GetCommNum() {
 	do {
 		cin >> input;
 		if (input != "1" && input != "2" && input != "3") {
-			cout << "1 ~ 3 ÀÔ·ÂÇØÁÖ¼¼¿ä : ";
+			cout << "1 ~ 3 ìž…ë ¥í•´ì£¼ì„¸ìš” : ";
 		}
 	} while (input != "1" 
 		&& input != "2"

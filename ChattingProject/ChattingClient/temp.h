@@ -1,91 +1,124 @@
-//#pragma once
-//int CheckIdInfo();
-//int main() {
-//	string id, pw, pw_1, name;
-//	while (1) {
-//		cout << "»∏ø¯∞°¿‘" << endl << "ªÁøÎ«“ ID∏¶ ¿‘∑¬«ÿ¡÷Ω Ω√ø¿: ";
-//		cin >> id;
-//		cout << endl;
-//		WSADATA wsa;
-//		// Winsock∏¶ √ ±‚»≠«œ¥¬ «‘ºˆ. MAKEWORD(2, 2)¥¬ Winsock¿« 2.2 πˆ¿¸¿ª ªÁøÎ«œ∞⁄¥Ÿ¥¬ ¿«πÃ.
-//		// Ω««‡ø° º∫∞¯«œ∏È 0¿ª, Ω«∆–«œ∏È ±◊ ¿Ãø‹¿« ∞™¿ª π›»Ø.
-//		// 0¿ª π›»Ø«ﬂ¥Ÿ¥¬ ∞Õ¿∫ Winsock¿ª ªÁøÎ«“ ¡ÿ∫Ò∞° µ«æ˙¥Ÿ¥¬ ¿«πÃ.
-//		int code = WSAStartup(MAKEWORD(2, 2), &wsa);
-//		if (!code) {
-//			client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP); //
-//			SOCKADDR_IN client_addr = {};
-//			client_addr.sin_family = AF_INET;
-//			client_addr.sin_port = htons(7720);
-//			InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
-//			while (1) {
-//				if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
-//					cout << "Server Connect" << endl;
-//					send(client_sock, ("duple|" + id).c_str(), ("duple|" + id).length(), 0);
-//					break;
-//				}
-//				cout << "Connecting..." << endl;
-//			}
-//			int check = CheckIdInfo();
-//			closesocket(client_sock);
-//			WSACleanup();
-//			if (check < 0) {
-//				cout << "º≠πˆø° ø¿∑˘∞° πﬂª˝«œø¥Ω¿¥œ¥Ÿ. ¿ÁΩ√µµ «ÿ¡÷Ω Ω√ø¿." << endl;
-//			}
-//			else {
-//				if (check == 0) {
-//					while (1) {
-//						cout << "ªÁøÎ«“ ∫Òπ–π¯»£∏¶ ¿‘∑¬«ÿ¡÷Ω Ω√ø¿: ";
-//						cin >> pw;
-//						cout << endl << "∫Òπ–π¯»£∏¶ »Æ¿Œ«ÿ¡÷Ω Ω√ø¿: ";
-//						cin >> pw_1;
-//						if (pw != pw_1) {
-//							cout << endl << "¿‘∑¬«— ∫Òπ–π¯»£∞° º≠∑Œ ¥Ÿ∏®¥œ¥Ÿ! \n¥ŸΩ√ ¿‘∑¬«ÿ¡÷Ω Ω√ø¿." << endl << endl;
-//							continue;
-//						}
-//						else {
-//							cout << endl << "ªÁøÎ«“ ¥–≥◊¿”¿ª ¿‘∑¬«ÿ ¡÷Ω Ω√ø¿: ";
-//							cin >> name;
-//							string uploadSignUp = "upload|" + id + "|" + pw + "|" + name;
-//							int code = WSAStartup(MAKEWORD(2, 2), &wsa);
-//							if (!code) {
-//								client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP); //
-//								SOCKADDR_IN client_addr = {};
-//								client_addr.sin_family = AF_INET;
-//								client_addr.sin_port = htons(7720);
-//								InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
-//								while (1) {
-//									if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
-//										cout << "Server Connect" << endl;
-//										send(client_sock, uploadSignUp.c_str(), uploadSignUp.length(), 0);
-//										break;
-//									}
-//									cout << "Connecting..." << endl;
-//								}
-//								closesocket(client_sock);
-//								WSACleanup();
-//								break;
-//							}
-//						}
-//						break;
-//					}
-//				}
-//				else {
-//					cout << "¿ÃπÃ ¡∏¿Á«œ¥¬ æ∆¿Ãµ¿‘¥œ¥Ÿ. ¥Ÿ∏• æ∆¿Ãµ∏¶ ¿‘∑¬«ÿ¡÷Ω Ω√ø¿.";
-//					continue;
-//				}
-//			}
-//		}
-//	}
-//}
-//int CheckIdInfo() {
-//	char buf[MAX_SIZE] = {};
-//	string msg;
-//	if (recv(client_sock, buf, MAX_SIZE, 0) > 0) {
-//		msg = buf;
-//		std::stringstream check(msg);
-//		return msg == "true" ? 1 : 0;
-//	}
-//	else {
-//		return -1;
-//	}
-//}
+#pragma once
+#ifndef __TEMP_H__
+#define __TEMP_H__
+
+#pragma comment(lib, "ws2_32.lib")
+#include <WinSock2.h> //Winsock Ìó§ÎçîÌååÏùº include. WSADATA Îì§Ïñ¥ÏûàÏùå.
+#include <WS2tcpip.h>
+#include <iostream>
+
+
+#define MAX_SIZE 1024
+using std::string;
+SOCKET client_sock;
+
+int CheckIdInfo() {
+	char buf[MAX_SIZE] = {};
+	string msg;
+	if (recv(client_sock, buf, MAX_SIZE, 0) > 0) {
+		msg = buf;
+		std::stringstream check(msg);
+		return msg == "true" ? 1 : 0;
+	}
+	else {
+		return -1;
+	}
+}
+SOCKADDR_IN ServerCheck() {
+	client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	SOCKADDR_IN client_addr = {};
+	client_addr.sin_family = AF_INET;
+	client_addr.sin_port = htons(7720);
+	InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
+	return client_addr;
+}
+void SendMsgCon(SOCKADDR_IN client_addr, string a) {
+	while (1) {
+		if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
+			send(client_sock, a.c_str(), a.length(), 0);
+			break;
+		}
+		cout << "Connecting..." << endl;
+	}
+}
+void PwCheck(string a) {
+	int i = 0;
+	a = "";
+	while (1) {
+		if (_kbhit())
+		{
+			a += _getch();
+			if (a[i] == 13) {
+				break;
+			}
+			i++;
+			cout << "*";
+		}
+	}
+}
+
+void SignUp() {
+	cout << "------------------------------" << endl;
+	string id, name, pw, pw_1;
+
+	string anyKey = "";
+	while (1) {
+		cout << "ÏÇ¨Ïö©Ìï† IDÎ•º ÏûÖÎ†•Ìï¥Ï£ºÏã≠ÏãúÏò§: ";
+		cin >> id;
+		cout << "------------------------------" << endl;
+		cout << endl;
+		WSADATA wsa;
+
+		int code = WSAStartup(MAKEWORD(2, 2), &wsa);
+		if (!code) {
+			SOCKADDR_IN client_addr = ServerCheck();
+			SendMsgCon(client_addr, ("duple|" + id));
+			int check = CheckIdInfo();
+			closesocket(client_sock);
+			WSACleanup();
+			if (check < 0) {
+				cout << "ÏÑúÎ≤ÑÏóê Ïò§Î•òÍ∞Ä Î∞úÏÉùÌïòÏòÄÏäµÎãàÎã§. Ïû¨ÏãúÎèÑ Ìï¥Ï£ºÏã≠ÏãúÏò§." << endl;
+			}
+			else {
+				if (check == 0) {
+					while (1) {
+						int i = 0;
+						cout << "ÏÇ¨Ïö©Ìï† ÎπÑÎ∞ÄÎ≤àÌò∏Î•º ÏûÖÎ†•Ìï¥Ï£ºÏã≠ÏãúÏò§: ";
+						PwCheck(pw);
+						cout << endl << "ÎπÑÎ∞ÄÎ≤àÌò∏Î•º ÌôïÏù∏Ìï¥Ï£ºÏã≠ÏãúÏò§: ";
+						PwCheck(pw_1);
+			
+						if (pw!=pw_1) {
+							cout << endl << "ÏûÖÎ†•Ìïú ÎπÑÎ∞ÄÎ≤àÌò∏Í∞Ä ÏÑúÎ°ú Îã§Î¶ÖÎãàÎã§! \nÎã§Ïãú ÏûÖÎ†•Ìï¥Ï£ºÏã≠ÏãúÏò§." << endl << endl;
+							continue;
+						}
+						else {
+							cout << endl << "ÏÇ¨Ïö©Ìï† ÎãâÎÑ§ÏûÑÏùÑ ÏûÖÎ†•Ìï¥ Ï£ºÏã≠ÏãúÏò§: ";
+							cin >> name;
+							string uploadSignUp = "upload|" + id + "|" + pw + "|" + name;
+							int code = WSAStartup(MAKEWORD(2, 2), &wsa);
+							if (!code) {
+								SOCKADDR_IN client_addr= ServerCheck();
+								SendMsgCon(client_addr, uploadSignUp);
+								closesocket(client_sock);
+								WSACleanup();
+								break;
+							}
+						}break;
+					}
+				}
+				else {
+					cout << "Ïù¥ÎØ∏ Ï°¥Ïû¨ÌïòÎäî ÏïÑÏù¥ÎîîÏûÖÎãàÎã§. Îã§Î•∏ ÏïÑÏù¥ÎîîÎ•º ÏûÖÎ†•Ìï¥Ï£ºÏã≠ÏãúÏò§."<<endl;
+					continue;
+				}
+			}
+		}
+		cout << "ÌöåÏõêÍ∞ÄÏûÖ ÏôÑÎ£å!"<<endl;
+		cout << "Í≥ÑÏÜçÌïòÎ†§Î©¥ ÏïÑÎ¨¥ÌÇ§Î•º ÏûÖÎ†•ÌïòÏã≠ÏãúÏò§.";
+		cin >> anyKey;
+		system("cls");
+		break;
+	}
+}
+#endif // !__TEMP_H__
+

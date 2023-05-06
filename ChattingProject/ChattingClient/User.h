@@ -3,6 +3,8 @@
 #define __User_H__
 
 #include <iostream>
+#include <conio.h>
+#include <string.h>
 #include "Sck.h"
 
 using std::string;
@@ -40,14 +42,27 @@ int GetUserInfo() {
 }
 
 int GetUser() {
-	string id;
-	string pw;
+	string id,pw_1;
+	string pw="";
+	int i = 0;
 	int successs = 0;
 
 	cout << "ID를 입력해주세요 : ";
 	cin >> id;
 	cout << "Password를 입력해주세요 : ";
-	cin >> pw;
+	while (1) {
+		if (_kbhit()) {
+			pw += _getch();
+				if (pw[i] == 13) {
+					// 개행문자 삭제(\r)
+					pw.pop_back();
+					break;
+			}
+			i++;
+			cout << "*";
+			
+		}
+	}
 
 	WSADATA wsa;
 
@@ -57,9 +72,7 @@ int GetUser() {
 		db_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 		SOCKADDR_IN client_addr = ConnectDBSck();
-
 		string userInfoStr = "login|" + id + "|" + pw;
-
 		SendComm(client_addr, userInfoStr);
 
 		successs = GetUserInfo();
@@ -88,6 +101,7 @@ void Login() {
 		}
 		else {
 			if (check) {
+				cout << endl;
 				cout << "환영합니다. " << userInfo.name << "님!" << endl;
 				break;
 			}
