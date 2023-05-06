@@ -46,8 +46,7 @@ string PwCheck(string a) {
 	int cnt = 0;
 	a = "";
 	while (1) {
-		if (_kbhit())
-		{
+		if (_kbhit()){
 			a += _getch();
 			if (a[i] == 13) {
 				return a;
@@ -90,6 +89,7 @@ void SignUp() {
 			SOCKADDR_IN client_addr = ServerCheck();
 			SendMsgCon(client_addr, ("duple|" + id));
 			int check = CheckIdInfo();
+			cout << check;
 			closesocket(client_sock);
 			WSACleanup();
 			if (check < 0) {
@@ -100,9 +100,9 @@ void SignUp() {
 					while (1) {
 						int i = 0;
 						cout << "사용할 비밀번호를 입력해주십시오: ";
-						PwCheck(pw);
+						pw=PwCheck(pw);
 						cout << endl << "비밀번호를 확인해주십시오: ";
-						PwCheck(pw_1);
+						pw_1=PwCheck(pw_1);
 			
 						if (pw!=pw_1) {
 							cout << endl << "입력한 비밀번호가 서로 다릅니다! \n다시 입력해주십시오." << endl << endl;
