@@ -41,18 +41,34 @@ void SendMsgCon(SOCKADDR_IN client_addr, string a) {
 		cout << "Connecting..." << endl;
 	}
 }
-void PwCheck(string a) {
+string PwCheck(string a) {
 	int i = 0;
+	int cnt = 0;
 	a = "";
 	while (1) {
 		if (_kbhit())
 		{
 			a += _getch();
 			if (a[i] == 13) {
+				return a;
 				break;
 			}
+			else if (a[i] == 8) {
+				if (cnt == 0) {
+					continue;
+				}
+				else {
+					cout << "\b \b";
+					//pw.pop_back();
+					i++;
+					cnt--;
+					continue;
+				}
+			}
 			i++;
+			cnt++;
 			cout << "*";
+			cout << a[i];
 		}
 	}
 }
