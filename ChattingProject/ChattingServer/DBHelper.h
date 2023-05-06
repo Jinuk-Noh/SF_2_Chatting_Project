@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef __DBHelper_H__
 #define __DBHelper_H__
 
@@ -11,9 +11,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
-const string server = "tcp://127.0.0.1:3306"; // 데이터베이스 주소
-const string username = "root";//"chatUser"; // 데이터베이스 사용자
-const string password = "1234"; // 데이터베이스 접속 비밀번호
+const string server = "tcp://127.0.0.1:3306"; // �����ͺ��̽� �ּ�
+const string username = "root";//"chatUser"; // �����ͺ��̽� ������
+const string password = "1234"; // �����ͺ��̽� ���� ���й�ȣ
 
 class DBHelper {
 private:
@@ -34,10 +34,10 @@ private:
 			exit(1);
 		}
 
-		// 데이터베이스 선택
+		// �����ͺ��̽� ����
 		con->setSchema("ChattingDB");
 
-		// db 한글 저장을 위한 셋팅 
+		// db �ѱ� ������ ���� ���� 
 		stmt = con->createStatement();
 		stmt->execute("set names euckr");
 		if (stmt) { delete stmt; stmt = nullptr; }
@@ -52,7 +52,7 @@ public:
 		return dbHelper;
 	}
 
-	//처음 DB에 테이블을 생성할 때 사용
+	//ó�� DB�� ���̺��� ������ �� ����
 	void InitTable() {
 
 		string query = "";
@@ -62,7 +62,7 @@ public:
 
 		//cout << "Creating table..." << endl;
 
-		//User Table 생성
+		//User Table ����
 		query = "CREATE TABLE IF NOT EXISTS User ( \
 			 id VARCHAR(20) PRIMARY KEY \
 			,pw VARCHAR(10) NOT NULL \
@@ -70,7 +70,7 @@ public:
 			);";
 		stmt->execute(query);
 
-		// Chatting Table 생성
+		// Chatting Table ����
 		query = "CREATE TABLE IF NOT EXISTS Chatting_Log("
 			"id VARCHAR(20) NOT NULL"
 			", content VARCHAR(400) NOT NULL"
@@ -99,14 +99,14 @@ public:
 		return result;
 	}
 
-	// PreparedStatement는 ? 값을 넣어줘야해서 인자로 전달받음
+	// PreparedStatement�� ? ���� �־������ؼ� ���ڷ� ���޹���
 	sql::ResultSet* SelectQueryPSTMT(sql::PreparedStatement* pstmt) {
 		sql::ResultSet* result = pstmt->executeQuery();
 
 		return result;
 	}
 
-	// SelectQueryPSTMT인자로 전달하기 위해 사용
+	// SelectQueryPSTMT���ڷ� �����ϱ� ���� ����
 	sql::PreparedStatement* CreatePreoaredStatement(string query) {
 		sql::PreparedStatement* pstmt = con->prepareStatement(query);
 
@@ -116,7 +116,7 @@ public:
 
 DBHelper* DBHelper::dbHelper = nullptr;
 
-//Server 종료 시 DBHelper 자원해제
+//Server ���� �� DBHelper �ڿ�����
 void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
 

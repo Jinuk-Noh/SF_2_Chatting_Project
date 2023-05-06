@@ -126,9 +126,9 @@ void add_client() {
 	string msg = "[공지] " + nickName + "님이 입장했습니다.";
 	cout << msg << endl;
 	sck_list.push_back(new_client);
-
+	cout << "여기1" << endl;
 	std::vector<string> chatLogV = GetChattingLog(DBHelper::CreateInstance());
-
+	cout << "여기2" << endl;
 	std::thread th(recv_msg, client_cnt);
 
 	for (int i = 0; i < chatLogV.size(); i++) {
