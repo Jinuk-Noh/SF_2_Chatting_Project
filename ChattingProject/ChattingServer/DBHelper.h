@@ -5,6 +5,7 @@
 #include <iostream>
 #include <mysql/jdbc.h>
 #include <string>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -149,7 +150,51 @@ string UserDupleCheck(DBHelper* dbHelper, const char* id) {
 	}
 }
 
+string GetUserInfo(DBHelper* dbHelper, const char* id, const char* pw) {
+	string query = "SELECT id, name FROM User WHERE id =? AND pw =?";
+	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
+	pstmt->setString(1, id);
+	pstmt->setString(2, pw);
+	sql::ResultSet* result = pstmt->executeQuery();
 
+	string resultStr = "";
+	while (result->next()) {
+		resultStr = result->getString(1) + "|" + result->getString(2);
+	}
+
+	ReleaseDBHelper();
+
+	return resultStr;
+}
+
+std::vector<string> GetChattingLog(DBHelper* dbHelper) {
+	std::vector<string> v;
+	string query = "SELECT content FROM "
+		" ( "
+		" SELECT concat(u.name, \"(\", l.id, \") : \", l.content, \" - [\", l.date, \"]\") AS content, l.date "
+		" FROM chatting_log l "
+		" LEFT JOIN user u "
+		" ON l.id = u.id "
+		" ORDER BY l.date DESC "
+		" LIMIT 10 "
+		" ) A "
+		" ORDER BY date ASC;"
+		;
+
+	sql::ResultSet* result =  dbHelper->SelectQuerySTMT(query);
+
+	v.push_back("----------이전 채팅----------");
+
+	while (result->next()) {
+		v.push_back(result->getString(1));
+	}
+
+	v.push_back("");
+
+	ReleaseDBHelper();
+
+	return v;
+}
 
 #pragma endregion
 
@@ -173,6 +218,22 @@ void UploadSignUp(DBHelper* dbHelper, const char* id, const char* pw, const char
 	sql::ResultSet* result = pstmt->executeQuery();
 
 	delete pstmt;
+
+	ReleaseDBHelper();
+}
+
+void InsertChatLog(DBHelper* dbHelper, const char* id, const char* content, const char* date) {
+	string query = "INSERT INTO Chatting_Log VALUE (?, ?, ?)";
+	sql::PreparedStatement* pstmt = dbHelper->CreatePreoaredStatement(query);
+	pstmt->setString(1, id);
+	pstmt->setString(2, content);
+	pstmt->setString(3, date);
+
+	pstmt->execute();
+
+	delete pstmt;
+
+	ReleaseDBHelper();
 }
 
 #pragma endregion
