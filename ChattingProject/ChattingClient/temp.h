@@ -7,6 +7,7 @@
 #include <WS2tcpip.h>
 #include <iostream>
 
+
 #define MAX_SIZE 1024
 using std::string;
 SOCKET client_sock;
@@ -40,13 +41,31 @@ void SendMsgCon(SOCKADDR_IN client_addr, string a) {
 		cout << "Connecting..." << endl;
 	}
 }
+void PwCheck(string a) {
+	int i = 0;
+	a = "";
+	while (1) {
+		if (_kbhit())
+		{
+			a += _getch();
+			if (a[i] == 13) {
+				break;
+			}
+			i++;
+			cout << "*";
+		}
+	}
+}
+
 void SignUp() {
 	cout << "------------------------------" << endl;
-	string id, pw, pw_1, name;
+	string id, name, pw, pw_1;
+
 	string anyKey = "";
 	while (1) {
 		cout << "사용할 ID를 입력해주십시오: ";
 		cin >> id;
+		cout << "------------------------------" << endl;
 		cout << endl;
 		WSADATA wsa;
 
@@ -63,11 +82,13 @@ void SignUp() {
 			else {
 				if (check == 0) {
 					while (1) {
+						int i = 0;
 						cout << "사용할 비밀번호를 입력해주십시오: ";
-						cin >> pw;
+						PwCheck(pw);
 						cout << endl << "비밀번호를 확인해주십시오: ";
-						cin >> pw_1;
-						if (pw != pw_1) {
+						PwCheck(pw_1);
+			
+						if (pw!=pw_1) {
 							cout << endl << "입력한 비밀번호가 서로 다릅니다! \n다시 입력해주십시오." << endl << endl;
 							continue;
 						}
