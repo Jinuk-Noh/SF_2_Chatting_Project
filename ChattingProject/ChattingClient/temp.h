@@ -1,30 +1,59 @@
 #pragma once
-int CheckIdInfo();
-int main() {
-	string id, pw, pw_1, name;
+#ifndef __TEMP_H__
+#define __TEMP_H__
+
+#pragma comment(lib, "ws2_32.lib")
+#include <WinSock2.h> //Winsock 헤더파일 include. WSADATA 들어있음.
+#include <WS2tcpip.h>
+#include <iostream>
+
+#define MAX_SIZE 1024
+using std::string;
+SOCKET client_sock;
+
+int CheckIdInfo() {
+	char buf[MAX_SIZE] = {};
+	string msg;
+	if (recv(client_sock, buf, MAX_SIZE, 0) > 0) {
+		msg = buf;
+		std::stringstream check(msg);
+		return msg == "true" ? 1 : 0;
+	}
+	else {
+		return -1;
+	}
+}
+SOCKADDR_IN ServerCheck() {
+	client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	SOCKADDR_IN client_addr = {};
+	client_addr.sin_family = AF_INET;
+	client_addr.sin_port = htons(7720);
+	InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
+	return client_addr;
+}
+void SendMsgCon(SOCKADDR_IN client_addr, string a) {
 	while (1) {
-		cout << "회원가입" << endl << "사용할 ID를 입력해주십시오: ";
+		if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
+			send(client_sock, a.c_str(), a.length(), 0);
+			break;
+		}
+		cout << "Connecting..." << endl;
+	}
+}
+void SignUp() {
+	cout << "------------------------------" << endl;
+	string id, pw, pw_1, name;
+	string anyKey = "";
+	while (1) {
+		cout << "사용할 ID를 입력해주십시오: ";
 		cin >> id;
 		cout << endl;
 		WSADATA wsa;
-		// Winsock를 초기화하는 함수. MAKEWORD(2, 2)는 Winsock의 2.2 버전을 사용하겠다는 의미.
-		// 실행에 성공하면 0을, 실패하면 그 이외의 값을 반환.
-		// 0을 반환했다는 것은 Winsock을 사용할 준비가 되었다는 의미.
+
 		int code = WSAStartup(MAKEWORD(2, 2), &wsa);
 		if (!code) {
-			client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP); //
-			SOCKADDR_IN client_addr = {};
-			client_addr.sin_family = AF_INET;
-			client_addr.sin_port = htons(7720);
-			InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
-			while (1) {
-				if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
-					cout << "Server Connect" << endl;
-					send(client_sock, ("duple|" + id).c_str(), ("duple|" + id).length(), 0);
-					break;
-				}
-				cout << "Connecting..." << endl;
-			}
+			SOCKADDR_IN client_addr = ServerCheck();
+			SendMsgCon(client_addr, ("duple|" + id));
 			int check = CheckIdInfo();
 			closesocket(client_sock);
 			WSACleanup();
@@ -48,44 +77,26 @@ int main() {
 							string uploadSignUp = "upload|" + id + "|" + pw + "|" + name;
 							int code = WSAStartup(MAKEWORD(2, 2), &wsa);
 							if (!code) {
-								client_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP); //
-								SOCKADDR_IN client_addr = {};
-								client_addr.sin_family = AF_INET;
-								client_addr.sin_port = htons(7720);
-								InetPton(AF_INET, TEXT("127.0.0.1"), &client_addr.sin_addr);
-								while (1) {
-									if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
-										cout << "Server Connect" << endl;
-										send(client_sock, uploadSignUp.c_str(), uploadSignUp.length(), 0);
-										break;
-									}
-									cout << "Connecting..." << endl;
-								}
+								SOCKADDR_IN client_addr= ServerCheck();
+								SendMsgCon(client_addr, uploadSignUp);
 								closesocket(client_sock);
 								WSACleanup();
 								break;
 							}
-						}
-						break;
+						}break;
 					}
 				}
 				else {
-					cout << "이미 존재하는 아이디입니다. 다른 아이디를 입력해주십시오.";
+					cout << "이미 존재하는 아이디입니다. 다른 아이디를 입력해주십시오."<<endl;
 					continue;
 				}
 			}
 		}
+		cout << "회원가입 완료!"<<endl;
+		cout << "계속하려면 아무키를 입력하십시오.";
+		cin >> anyKey;
+		system("cls");
+		break;
 	}
 }
-int CheckIdInfo() {
-	char buf[MAX_SIZE] = {};
-	string msg;
-	if (recv(client_sock, buf, MAX_SIZE, 0) > 0) {
-		msg = buf;
-		std::stringstream check(msg);
-		return msg == "true" ? 1 : 0;
-	}
-	else {
-		return -1;
-	}
-}
+#endif // !__TEMP_H__

@@ -196,7 +196,9 @@ void RunDB() {
 
 			}
 			else if (comm.find("login") == 0) {
-
+				v = SplitComm(comm);
+				msg = GetUserInfo(DBHelper::CreateInstance(), v[1].c_str(), v[2].c_str());
+				send(new_client.sck, msg.c_str(), MAX_SIZE, 0);
 			}
 			else if (comm.find("upload") == 0) {
 				v=SplitComm(comm);
