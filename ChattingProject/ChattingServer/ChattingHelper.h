@@ -97,7 +97,7 @@ void recv_msg(int idx) {
 			send_msg(msg.c_str(), sck_list[idx].content);
 		}
 		else {
-			msg = "[ê³µì§€] " + nickName + " ë‹˜ì´ í‡´ì¥í–ˆìŠµë‹ˆë‹¤.";
+			msg = "[°øÁö] " + nickName + " ´ÔÀÌ ÅğÀåÇß½À´Ï´Ù.";
 			cout << msg << endl;
 			send_msg(msg.c_str());
 			del_client(idx);
@@ -119,11 +119,11 @@ void add_client() {
 	new_client.sck = accept(server_sock.sck, (sockaddr*)&addr, &addrSize);
 	recv(new_client.sck, buf, MAX_SIZE, 0);
 
-	new_client.content = string(buf); // socketì— name(id) í˜•ì‹ìœ¼ë¡œ ì €ì¥
+	new_client.content = string(buf); // socket¿¡ name(id) Çü½ÄÀ¸·Î ÀúÀå
 	std::vector<string> v = SplitComm(new_client.content);
 	string nickName = MakeNickName(v);
 
-	string msg = "[ê³µì§€] " + nickName + "ë‹˜ì´ ì…ì¥í–ˆìŠµë‹ˆë‹¤.";
+	string msg = "[°øÁö] " + nickName + "´ÔÀÌ ÀÔÀåÇß½À´Ï´Ù.";
 	cout << msg << endl;
 	sck_list.push_back(new_client);
 
@@ -136,7 +136,7 @@ void add_client() {
 	}
 
 	client_cnt++;
-	cout << "[ê³µì§€ í˜„ì¬ ì ‘ì†ì ìˆ˜ : " << client_cnt << "ëª…" << endl;
+	cout << "[°øÁö ÇöÀç Á¢¼ÓÀÚ ¼ö : " << client_cnt << "¸í" << endl;
 	send_msg(msg.c_str());
 
 	th.join();
@@ -171,7 +171,7 @@ void Run() {
 
 	}
 	else {
-		cout << "í”„ë¡œê·¸ë¨ ì¢…ë£Œ. (Error code : " << code << ")";
+		cout << "ÇÁ·Î±×·¥ Á¾·á. (Error code : " << code << ")";
 	}
 
 	WSACleanup();
@@ -215,7 +215,7 @@ void RunDB() {
 
 			new_client.sck = accept(dbServer_sock.sck, (sockaddr*)&addr, &addrSize);
 			recv(new_client.sck, buf, MAX_SIZE, 0);
-			//íšŒì›ê°€ì…
+			//È¸¿ø°¡ÀÔ
 			new_client.content = string(buf);
 
 			string comm = new_client.content;
@@ -250,7 +250,7 @@ void RunDB() {
 		}
 	}
 	else {
-		cout << "DB ì†Œì¼“ ì¢…ë£Œ. (Error code : " << code << ")";
+		cout << "DB ¼ÒÄÏ Á¾·á. (Error code : " << code << ")";
 	}
 
 	WSACleanup();

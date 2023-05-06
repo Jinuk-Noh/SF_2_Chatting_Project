@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef __TEMP_H__
 #define __TEMP_H__
 

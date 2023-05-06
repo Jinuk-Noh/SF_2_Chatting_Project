@@ -12,11 +12,11 @@ string GetCommNum();
 int main() {
 	while (1) {
 		cout << "------------------------------" << endl;
-		cout << "1: ë¡œê·¸ì¸" << endl;
-		cout << "2: íšŒì› ê°€ì…" << endl;
-		cout << "3: ì±„íŒ… ë“¤ì–´ê°€ê¸°" << endl;
+		cout << "1: ·Î±×ÀÎ" << endl;
+		cout << "2: È¸¿ø °¡ÀÔ" << endl;
+		cout << "3: Ã¤ÆÃ µé¾î°¡±â" << endl;
 		cout << "------------------------------"<<endl;
-		cout << "ì…ë ¥: ";
+		cout << "ÀÔ·Â: ";
 
 
 		int commNum = stoi(GetCommNum());
@@ -31,7 +31,7 @@ int main() {
 			break;
 		case 3:
 			if (userInfo.id == "") {
-				cout << "ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”" << endl;
+				cout << "·Î±×ÀÎÀ» ÇØÁÖ¼¼¿ä" << endl;
 				continue;
 			}
 			Chatting();
@@ -47,7 +47,7 @@ string GetCommNum() {
 	do {
 		cin >> input;
 		if (input != "1" && input != "2" && input != "3") {
-			cout << "1 ~ 3 ì…ë ¥í•´ì£¼ì„¸ìš” : ";
+			cout << "1 ~ 3 ÀÔ·ÂÇØÁÖ¼¼¿ä : ";
 		}
 	} while (input != "1" 
 		&& input != "2"
