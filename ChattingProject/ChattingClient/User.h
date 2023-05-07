@@ -59,8 +59,6 @@ int GetUser() {
 	int code = WSAStartup(MAKEWORD(2, 2), &wsa);
 
 	if (!code) {
-		db_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-
 		SOCKADDR_IN client_addr = ConnectDBSck();
 		string userInfoStr = "login|" + id + "|" + pw;
 		SendComm(client_addr, userInfoStr);
@@ -80,13 +78,14 @@ int GetUser() {
 }
 
 void Login() {
-	cout << "------------------------------" << endl;
 	int check = 0;
 	string input = "";
 	while (1) {
 		check = GetUser();
 		if (check < 0) {
+			cout << "------------------------------" << endl;
 			cout << "네트워크에 문제가 생겼습니다." << endl;
+			cout << "------------------------------" << endl;
 			break;
 		}
 		else {
@@ -97,9 +96,15 @@ void Login() {
 			}
 			else if (check == 0) {
 				//system("cls");
-				cout << "로그인 실패 ID 또는 Password를 확인해주세요" << endl;
-
-				cout << "계속 시도 : 아무키 입력/메인 메뉴 : 1 입력 : ";
+				cout << endl<<endl;
+				cout << "로그인 실패!"<<endl;
+				cout<<"ID 또는 Password를 확인해주세요" << endl;
+				cout << endl;
+				cout << "------------------------------" << endl;
+				cout << "계속 시도 : 아무키 입력"<<endl;
+				cout<<"메인 메뉴 : 1 입력"<<endl;
+				cout << "------------------------------" << endl;
+				cout << "입력: ";
 				cin >> input;
 				system("cls");
 

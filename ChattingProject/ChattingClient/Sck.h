@@ -13,6 +13,7 @@ using namespace std;
 SOCKET db_sock;
 SOCKET chat_sock;
 SOCKADDR_IN ConnectDBSck() {
+	db_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	SOCKADDR_IN client_addr = {};
 	client_addr.sin_family = AF_INET;
 	client_addr.sin_port = htons(7720);
@@ -37,7 +38,7 @@ void SendComm(SOCKADDR_IN sock_addr, string comm) {
 			send(db_sock, comm.c_str(), comm.length(), 0);
 			break;
 		}
-		cout << "Test - Connecting..." << endl;
+		//cout << "Test - Connecting..." << endl;
 	}
 }
 

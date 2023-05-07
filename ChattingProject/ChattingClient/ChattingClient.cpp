@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 
 #include "User.h"
 #include "Chatting.h"
@@ -11,8 +12,11 @@
 using namespace std;
 string GetCommNum();
 int main() {
+	system("mode con cols=50 lines=30 | title Chatting");
 	while (1) {
-		cout << "------------------------------" << endl;
+		
+		//cout.setf(ios::right); (setw(10)
+		cout <<"------------------------------" << endl;
 		cout << "1: 로그인" << endl;
 		cout << "2: 회원 가입" << endl;
 		cout << "3: 채팅 들어가기" << endl;
