@@ -119,9 +119,7 @@ DBHelper* DBHelper::dbHelper = nullptr;
 //Server ���� �� DBHelper �ڿ�����
 void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
-
 	if (dbHelper != nullptr) {
-
 		delete dbHelper;
 		dbHelper = nullptr;
 	}
@@ -189,7 +187,7 @@ std::vector<string> GetChattingLog(DBHelper* dbHelper) {
 	while (result->next()) {
 		v.push_back(result->getString(1));
 	}
-
+	
 	v.push_back("");
 
 	return v;
