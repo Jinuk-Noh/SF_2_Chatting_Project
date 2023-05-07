@@ -65,7 +65,7 @@ public:
 		//User Table ����
 		query = "CREATE TABLE IF NOT EXISTS User ( \
 			 id VARCHAR(20) PRIMARY KEY \
-			,pw VARCHAR(10) NOT NULL \
+			,pw VARCHAR(50) NOT NULL \
 			,name VARCHAR(10) NOT NULL \
 			);";
 		stmt->execute(query);

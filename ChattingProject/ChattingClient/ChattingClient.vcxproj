@@ -130,6 +130,7 @@
     <ClCompile Include="ChattingClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCrypt.h" />
     <ClInclude Include="Chatting.h" />
     <ClInclude Include="Sck.h" />
     <ClInclude Include="temp.h" />

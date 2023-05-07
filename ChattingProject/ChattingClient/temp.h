@@ -5,7 +5,10 @@
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h> //Winsock 헤더파일 include. WSADATA 들어있음.
 #include <WS2tcpip.h>
+#include <cstring>
 #include <iostream>
+#include "CCrypt.h"
+#include <cstddef>
 
 
 #define MAX_SIZE 1024
@@ -41,18 +44,17 @@ void SendMsgCon(SOCKADDR_IN client_addr, string a) {
 		cout << "Connecting..." << endl;
 	}
 }
-string PwCheck(string a) {
-	int i = 0;
+string PwCheck(string pw) {
 	int cnt = 0;
-	a = "";
+	pw = "";
 	while (1) {
 		if (_kbhit()){
 			int c = _getch();
 			/*a += _getch();*/
 			//엔터
 			if (c == 13) {
-				cout << "||" << a << "||";
-				return a;
+				pw = PwEncrypt(pw);
+				return pw;
 			}
 			//스페이스바
 			else if (c == 32) {
@@ -64,26 +66,24 @@ string PwCheck(string a) {
 					continue;
 				}
 				else {
+					//* 별지우기
 					cout << "\b \b";
-					//pw.pop_back();
-					a.pop_back();
-					i++;
-					cnt--;
+					pw.pop_back();
+					if (cnt != 0) {
+						cnt--;
+					}
 					continue;
 				}
 			}
 			else {
-				a += c;
-				i++;
+				//10자리 이상 입력 제한
+				if (cnt > 9) continue;
+				pw += c;
 				cnt++;
 				cout << "*";
-				
 			}
-			
 		}
 	}
-
-	
 }
 
 void SignUp() {

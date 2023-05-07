@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef __User_H__
 #define __User_H__
 
@@ -24,7 +24,7 @@ int GetUserInfo() {
 		std::stringstream ss(msg);
 
 		vector<string> v = SplitComm(msg);
-	
+
 		if (v.size() > 0) {
 			userInfo.id = v[0];
 			userInfo.name = v[1];
@@ -43,8 +43,8 @@ int GetUserInfo() {
 }
 
 int GetUser() {
-	string id,pw_1;
-	string pw="";
+	string id, pw_1;
+	string pw = "";
 	int i = 0;
 	int successs = 0;
 
@@ -98,7 +98,7 @@ void Login() {
 			else if (check == 0) {
 				//system("cls");
 				cout << "로그인 실패 ID 또는 Password를 확인해주세요" << endl;
-				
+
 				cout << "계속 시도 : 아무키 입력/메인 메뉴 : 1 입력 : ";
 				cin >> input;
 				system("cls");
@@ -112,4 +112,3 @@ void Login() {
 	}
 }
 #endif // !__User_H__
-
