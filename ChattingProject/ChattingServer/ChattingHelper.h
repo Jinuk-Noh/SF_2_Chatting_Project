@@ -14,7 +14,7 @@
 #include <sstream>
 
 #define MAX_SIZE 1024
-#define MAX_CLIENT 12
+#define MAX_CLIENT 2
 
 using std::cout;
 using std::cin;

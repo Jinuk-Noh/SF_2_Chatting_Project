@@ -47,29 +47,43 @@ string PwCheck(string a) {
 	a = "";
 	while (1) {
 		if (_kbhit()){
-			a += _getch();
-			if (a[i] == 13) {
+			int c = _getch();
+			/*a += _getch();*/
+			//엔터
+			if (c == 13) {
+				cout << "||" << a << "||";
 				return a;
-				break;
 			}
-			else if (a[i] == 8) {
+			//스페이스바
+			else if (c == 32) {
+				continue;
+			}
+			//백스페이스
+			else if (c == 8) {
 				if (cnt == 0) {
 					continue;
 				}
 				else {
 					cout << "\b \b";
 					//pw.pop_back();
+					a.pop_back();
 					i++;
 					cnt--;
 					continue;
 				}
 			}
-			i++;
-			cnt++;
-			cout << "*";
-			cout << a[i];
+			else {
+				a += c;
+				i++;
+				cnt++;
+				cout << "*";
+				
+			}
+			
 		}
 	}
+
+	
 }
 
 void SignUp() {
@@ -89,7 +103,6 @@ void SignUp() {
 			SOCKADDR_IN client_addr = ServerCheck();
 			SendMsgCon(client_addr, ("duple|" + id));
 			int check = CheckIdInfo();
-			cout << check;
 			closesocket(client_sock);
 			WSACleanup();
 			if (check < 0) {
