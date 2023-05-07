@@ -14,7 +14,7 @@
 #include <sstream>
 
 #define MAX_SIZE 1024
-#define MAX_CLIENT 12
+#define MAX_CLIENT 2
 
 using std::cout;
 using std::cin;
@@ -24,22 +24,24 @@ using std::string;
 struct SOCKET_INFO {
 	SOCKET sck;
 	string content;
+
+	bool operator ==(SOCKET_INFO input) {
+		return sck == input.sck && content == input.content;
+	}
 };
 std::vector<string> SplitComm(string comm);
+void del_client(SOCKET_INFO sck, int thIdx);
 #pragma region ChattingSocket
 std::vector<SOCKET_INFO> sck_list;
 SOCKET_INFO server_sock;
 int client_cnt = 0;
+std::thread th1[MAX_CLIENT];
 
 string MakeNickName(std::vector<string> v) {
 
 	return v[1] + "(" + v[0] + ")";
 }
 
-void del_client(int idx) {
-	closesocket(sck_list[idx].sck);
-	client_cnt--;
-}
 
 void server_init() {
 	server_sock.sck = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -71,43 +73,44 @@ void send_msg(const char* msg, string nickName) {
 	}
 }
 
-void send_chat_log(const char* msg, string nickName) {
-	for (int i = 0; i < sck_list.size(); i++) {
-		if (sck_list[i].content == nickName) {
-			send(sck_list[i].sck, msg, MAX_SIZE, 0);
-			break;
-		}
-	}
+void send_chat_log(const char* msg, SOCKET sck) {
+	//for (int i = 0; i < sck_list.size(); i++) {
+	//	if (sck_list[i].sck == sck.sck) {
+			send(sck, msg, MAX_SIZE, 0);
+	//		break;
+	//	}
+	//}
 }
 
-void recv_msg(int idx) {
+void recv_msg(int idx, int thIdx, SOCKET_INFO sck) {
+	cout << "c4" << endl;
 	char buf[MAX_SIZE] = {};
 	string msg = "";
-	std::vector<string> v = SplitComm(sck_list[idx].content);
+	std::vector<string> v = SplitComm(sck.content);
 	string nickName = MakeNickName(v);
-
+	cout << "c5" << endl;
 	while (1) {
 		ZeroMemory(&buf, MAX_SIZE);
-		if (recv(sck_list[idx].sck, buf, MAX_SIZE, 0) > 0) {
+		if (recv(sck.sck, buf, MAX_SIZE, 0) > 0) {
 			std::vector<string> msgV = SplitComm(string(buf));
 			
 			msg = nickName + " : " + msgV[1];
 			InsertChatLog(DBHelper::CreateInstance(), v[0].c_str(), msgV[1].c_str(), msgV[0].c_str());
 			cout << msg << endl;
-			send_msg(msg.c_str(), sck_list[idx].content);
+			send_msg(msg.c_str(), sck.content);
 		}
 		else {
 			msg = "[공지] " + nickName + " 님이 퇴장했습니다.";
 			cout << msg << endl;
 			send_msg(msg.c_str());
-			del_client(idx);
+			del_client(sck, thIdx);
 
 			return;
 		}
 	}
 }
 
-void add_client() {
+void add_client(int thIdx) {
 	SOCKADDR_IN addr = {};
 	int addrSize = sizeof(addr);
 	char buf[MAX_SIZE] = {};
@@ -126,13 +129,14 @@ void add_client() {
 	string msg = "[공지] " + nickName + "님이 입장했습니다.";
 	cout << msg << endl;
 	sck_list.push_back(new_client);
-	cout << "여기1" << endl;
+	cout << "c1" << endl;
 	std::vector<string> chatLogV = GetChattingLog(DBHelper::CreateInstance());
-	cout << "여기2" << endl;
-	std::thread th(recv_msg, client_cnt);
+	cout << "c2" << endl;
+	std::thread th(recv_msg, client_cnt, thIdx, new_client);
+	cout << "c3" << endl;
 
 	for (int i = 0; i < chatLogV.size(); i++) {
-		send_chat_log(chatLogV.at(i).c_str(), new_client.content);
+		send_chat_log(chatLogV.at(i).c_str(), new_client.sck);
 	}
 
 	client_cnt++;
@@ -142,6 +146,33 @@ void add_client() {
 	th.join();
 }
 
+std::vector<int> deletedThreadIdx;
+std::map<int, std::thread> dicTh;
+void del_client(SOCKET_INFO sck, int thIdx) {
+	//closesocket(sck_list[idx].sck);
+	closesocket(sck.sck);
+	client_cnt--;
+	sck_list.erase(remove(sck_list.begin(), sck_list.end(), sck), sck_list.end());
+
+	deletedThreadIdx.push_back(thIdx);
+}
+
+
+void CheckThread() {
+	while (1) {
+		if (deletedThreadIdx.size() > 0) {
+			cout << "t1" << endl;
+			for (auto i : deletedThreadIdx) {
+				if (dicTh[i].joinable()) {
+					cout << "t2" << endl;
+					dicTh[i].join();
+					dicTh[i] = std::thread(add_client, i);
+				}
+			}
+		}
+	}
+}
+
 void Run() {
 	WSADATA wsa;
 
@@ -149,10 +180,13 @@ void Run() {
 
 	if (!code) {
 		server_init();
-		std::thread th1[MAX_CLIENT];
+		
 		for (int i = 0; i < MAX_CLIENT; i++) {
-			th1[i] = std::thread(add_client);
+			dicTh.insert(make_pair(i, std::thread(add_client, i)));
 		}
+
+		std::thread th = std::thread(CheckThread);
+		th.detach();
 
 		while (1) {
 			string text, msg = "";
@@ -163,8 +197,12 @@ void Run() {
 			send_msg(msg.c_str());
 		}
 
-		for (int i = 0; i < MAX_CLIENT; i++) {
-			th1[i].join();
+		if (dicTh.size() > 0) {
+			for (auto i = dicTh.begin(); i != dicTh.end(); i++) {
+				if (i->second.joinable()) {
+					i->second.join();
+				}
+			}
 		}
 
 		closesocket(server_sock.sck);
