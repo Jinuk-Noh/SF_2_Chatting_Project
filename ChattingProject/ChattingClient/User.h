@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <string.h>
 #include "Sck.h"
+#include "temp.h"
 
 using std::string;
 
@@ -50,19 +51,21 @@ int GetUser() {
 	cout << "ID를 입력해주세요 : ";
 	cin >> id;
 	cout << "Password를 입력해주세요 : ";
-	while (1) {
-		if (_kbhit()) {
-			pw += _getch();
-				if (pw[i] == 13) {
-					// 개행문자 삭제(\r)
-					pw.pop_back();
-					break;
-			}
-			i++;
-			cout << "*";
-			
-		}
-	}
+
+	pw = PwCheck(pw);
+	//while (1) {
+	//	if (_kbhit()) {
+	//		pw += _getch();
+	//			if (pw[i] == 13) {
+	//				// 개행문자 삭제(\r)
+	//				pw.pop_back();
+	//				break;
+	//		}
+	//		i++;
+	//		cout << "*";
+	//		
+	//	}
+	//}
 
 	WSADATA wsa;
 

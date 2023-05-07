@@ -119,9 +119,7 @@ DBHelper* DBHelper::dbHelper = nullptr;
 //Server ���� �� DBHelper �ڿ�����
 void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
-
 	if (dbHelper != nullptr) {
-
 		delete dbHelper;
 		dbHelper = nullptr;
 	}
@@ -165,8 +163,6 @@ string GetUserInfo(DBHelper* dbHelper, const char* id, const char* pw) {
 	}
 
 
-	ReleaseDBHelper();
-
 	return resultStr;
 }
 
@@ -191,10 +187,8 @@ std::vector<string> GetChattingLog(DBHelper* dbHelper) {
 	while (result->next()) {
 		v.push_back(result->getString(1));
 	}
-
+	
 	v.push_back("");
-
-	ReleaseDBHelper();
 
 	return v;
 }
@@ -221,8 +215,6 @@ void UploadSignUp(DBHelper* dbHelper, const char* id, const char* pw, const char
 	sql::ResultSet* result = pstmt->executeQuery();
 
 	delete pstmt;
-
-	ReleaseDBHelper();
 }
 
 void InsertChatLog(DBHelper* dbHelper, const char* id, const char* content, const char* date) {
@@ -235,8 +227,6 @@ void InsertChatLog(DBHelper* dbHelper, const char* id, const char* content, cons
 	pstmt->execute();
 
 	delete pstmt;
-
-	ReleaseDBHelper();
 }
 
 #pragma endregion
