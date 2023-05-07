@@ -48,24 +48,11 @@ int GetUser() {
 	int i = 0;
 	int successs = 0;
 
-	cout << "ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä : ";
+	cout << "IDë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” : ";
 	cin >> id;
-	cout << "Password¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä : ";
-
+	cout << "Passwordë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” : ";
 	pw = PwCheck(pw);
-	//while (1) {
-	//	if (_kbhit()) {
-	//		pw += _getch();
-	//			if (pw[i] == 13) {
-	//				// °³Çà¹®ÀÚ »èÁ¦(\r)
-	//				pw.pop_back();
-	//				break;
-	//		}
-	//		i++;
-	//		cout << "*";
-	//		
-	//	}
-	//}
+
 
 	WSADATA wsa;
 
@@ -99,20 +86,20 @@ void Login() {
 	while (1) {
 		check = GetUser();
 		if (check < 0) {
-			cout << "³×Æ®¿öÅ©¿¡ ¹®Á¦°¡ »ı°å½À´Ï´Ù." << endl;
+			cout << "ë„¤íŠ¸ì›Œí¬ì— ë¬¸ì œê°€ ìƒê²¼ìŠµë‹ˆë‹¤." << endl;
 			break;
 		}
 		else {
 			if (check) {
 				cout << endl;
-				cout << "È¯¿µÇÕ´Ï´Ù. " << userInfo.name << "´Ô!" << endl;
+				cout << "í™˜ì˜í•©ë‹ˆë‹¤. " << userInfo.name << "ë‹˜!" << endl;
 				break;
 			}
 			else if (check == 0) {
-				system("cls");
-				cout << "·Î±×ÀÎ ½ÇÆĞ ID ¶Ç´Â Password¸¦ È®ÀÎÇØÁÖ¼¼¿ä" << endl;
-
-				cout << "°è¼Ó ½Ãµµ : ¾Æ¹«Å° ÀÔ·Â/¸ŞÀÎ ¸Ş´º : 1 ÀÔ·Â : ";
+				//system("cls");
+				cout << "ë¡œê·¸ì¸ ì‹¤íŒ¨ ID ë˜ëŠ” Passwordë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”" << endl;
+				
+				cout << "ê³„ì† ì‹œë„ : ì•„ë¬´í‚¤ ì…ë ¥/ë©”ì¸ ë©”ë‰´ : 1 ì…ë ¥ : ";
 				cin >> input;
 				system("cls");
 
