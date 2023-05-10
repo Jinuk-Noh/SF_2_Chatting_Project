@@ -72,10 +72,11 @@ void SignUp() {
 	int input;
 
 	string anyKey = "";
+	cout << endl;
+	system("cls");
 	while (1) {
 		cout << "사용할 ID를 입력해주십시오: ";
 		cin >> id;
-		cout << endl;
 		WSADATA wsa;
 
 		int code = WSAStartup(MAKEWORD(2, 2), &wsa);
@@ -91,10 +92,10 @@ void SignUp() {
 			}
 			else {
 				if (check == 0) {
-					cout << "------------------------------" <<endl;
 					cout << "해당 아이디로 회원가입 하시겠습니까?" << endl <<endl;
-					cout<< "예: 1 입력 \n아니오:아무키 입력"<<endl;
-					cout << "------------------------------" << endl;
+					cout << "--------------------------------------------------" << endl;
+					cout << endl << "예: 1 입력\n아니오: 아무키 입력"<<endl << endl;
+					cout << "--------------------------------------------------" << endl;
 					cin >> input;
 					if (input != 1) {
 						system("cls");
@@ -103,6 +104,8 @@ void SignUp() {
 
 					while (1) {
 						int i = 0;
+						system("cls");
+						cout << "입력한 ID: " << id << endl;
 						cout << "사용할 비밀번호를 입력해주십시오: ";
 						pw=PwCheck(pw);
 						cout << endl << "비밀번호를 확인해주십시오: ";
@@ -112,6 +115,7 @@ void SignUp() {
 							cout << endl << "입력한 비밀번호가 서로 다릅니다! \n다시 입력해주십시오." << endl << endl;
 						}
 						else {
+
 							cout << endl << "사용할 닉네임을 입력해 주십시오: ";
 							cin >> name;
 							string uploadSignUp = "upload|" + id + "|" + pw + "|" + name;
@@ -127,13 +131,16 @@ void SignUp() {
 					}
 				}
 				else {
-					cout << "이미 존재하는 아이디입니다. 다른 아이디를 입력해주십시오."<<endl;
+					cout << endl;
+					cout << "이미 존재하는 아이디입니다." << endl;
+					cout<<"다른 아이디를 입력해주십시오."<<endl;
+					cout << endl;
 					continue;
 				}
 			}
 		}
-		cout << "회원가입 완료!"<<endl;
-		cout << "계속하려면 아무키를 입력하십시오.";
+		cout << "회원가입 완료!"<<endl<<endl;
+		cout << "메인 메뉴로 돌아가려면 아무키를 입력하십시오."<<endl;
 		cin >> anyKey;
 		system("cls");
 		break;

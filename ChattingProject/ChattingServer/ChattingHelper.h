@@ -14,7 +14,7 @@
 #include <sstream>
 
 #define MAX_SIZE 1024
-#define MAX_CLIENT 2
+#define MAX_CLIENT 12
 
 using std::cout;
 using std::cin;
@@ -83,12 +83,10 @@ void send_chat_log(const char* msg, SOCKET sck) {
 }
 
 void recv_msg(int idx, int thIdx, SOCKET_INFO sck) {
-	cout << "c4" << endl;
 	char buf[MAX_SIZE] = {};
 	string msg = "";
 	std::vector<string> v = SplitComm(sck.content);
 	string nickName = MakeNickName(v);
-	cout << "c5" << endl;
 	while (1) {
 		ZeroMemory(&buf, MAX_SIZE);
 		if (recv(sck.sck, buf, MAX_SIZE, 0) > 0) {
@@ -129,11 +127,8 @@ void add_client(int thIdx) {
 	string msg = "[공지] " + nickName + "님이 입장했습니다.";
 	cout << msg << endl;
 	sck_list.push_back(new_client);
-	cout << "c1" << endl;
 	std::vector<string> chatLogV = GetChattingLog(DBHelper::CreateInstance());
-	cout << "c2" << endl;
 	std::thread th(recv_msg, client_cnt, thIdx, new_client);
-	cout << "c3" << endl;
 
 	for (int i = 0; i < chatLogV.size(); i++) {
 		send_chat_log(chatLogV.at(i).c_str(), new_client.sck);
@@ -161,10 +156,8 @@ void del_client(SOCKET_INFO sck, int thIdx) {
 void CheckThread() {
 	while (1) {
 		if (deletedThreadIdx.size() > 0) {
-			cout << "t1" << endl;
 			for (auto i : deletedThreadIdx) {
 				if (dicTh[i].joinable()) {
-					cout << "t2" << endl;
 					dicTh[i].join();
 					dicTh[i] = std::thread(add_client, i);
 				}

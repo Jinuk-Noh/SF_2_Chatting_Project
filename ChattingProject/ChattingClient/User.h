@@ -6,7 +6,7 @@
 #include <conio.h>
 #include <string.h>
 #include "Sck.h"
-#include "temp.h"
+#include "SignUp.h"
 
 using std::string;
 
@@ -47,7 +47,7 @@ int GetUser() {
 	string pw = "";
 	int i = 0;
 	int successs = 0;
-
+	system("cls");
 	cout << "ID를 입력해주세요 : ";
 	cin >> id;
 	cout << "Password를 입력해주세요 : ";
@@ -83,28 +83,27 @@ void Login() {
 	while (1) {
 		check = GetUser();
 		if (check < 0) {
-			cout << "------------------------------" << endl;
-			cout << "네트워크에 문제가 생겼습니다." << endl;
-			cout << "------------------------------" << endl;
+			cout << "--------------------------------------------------" << endl;
+			cout << endl << "네트워크에 문제가 생겼습니다." << endl << endl;
+			cout << "--------------------------------------------------" << endl;
 			break;
 		}
 		else {
 			if (check) {
-				cout << endl;
-				cout << "환영합니다. " << userInfo.name << "님!" << endl;
+				cout << endl<< endl;
+				cout << "환영합니다. " << userInfo.name << "님!" << endl<< endl;
 				break;
 			}
 			else if (check == 0) {
-				//system("cls");
+				system("cls");
 				cout << endl<<endl;
 				cout << "로그인 실패!"<<endl;
 				cout<<"ID 또는 Password를 확인해주세요" << endl;
 				cout << endl;
-				cout << "------------------------------" << endl;
-				cout << "계속 시도 : 아무키 입력"<<endl;
-				cout<<"메인 메뉴 : 1 입력"<<endl;
-				cout << "------------------------------" << endl;
-				cout << "입력: ";
+				cout << "--------------------------------------------------" << endl;
+				cout <<endl<< "계속 시도 : 아무키 입력"<<endl;
+				cout<<"메인 메뉴 : 1 입력"<<endl<<endl;
+				cout << "--------------------------------------------------" << endl;
 				cin >> input;
 				system("cls");
 

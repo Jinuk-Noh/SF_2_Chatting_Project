@@ -6,7 +6,7 @@
 
 #include "User.h"
 #include "Chatting.h"
-#include "temp.h"
+#include "SignUp.h"
 
 
 using namespace std;
@@ -16,12 +16,11 @@ int main() {
 	while (1) {
 		
 		//cout.setf(ios::right); (setw(10)
-		cout <<"------------------------------" << endl;
-		cout << "1: 로그인" << endl;
+		cout <<"--------------------------------------------------" << endl;
+		cout <<endl<< "1: 로그인" << endl;
 		cout << "2: 회원 가입" << endl;
-		cout << "3: 채팅 들어가기" << endl;
-		cout << "------------------------------"<<endl;
-		cout << "입력: ";
+		cout << "3: 채팅 들어가기" << endl<<endl;
+		cout << "--------------------------------------------------"<<endl;
 
 
 		int commNum = stoi(GetCommNum());

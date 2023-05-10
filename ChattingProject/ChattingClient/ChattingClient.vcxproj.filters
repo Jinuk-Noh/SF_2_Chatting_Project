@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="temp.h">
+    <ClInclude Include="SignUp.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Chatting.h">

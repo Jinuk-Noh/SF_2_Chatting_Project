@@ -133,7 +133,7 @@
     <ClInclude Include="CCrypt.h" />
     <ClInclude Include="Chatting.h" />
     <ClInclude Include="Sck.h" />
-    <ClInclude Include="temp.h" />
+    <ClInclude Include="SignUp.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
