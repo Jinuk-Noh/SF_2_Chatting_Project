@@ -182,7 +182,7 @@ std::vector<string> GetChattingLog(DBHelper* dbHelper) {
 
 	sql::ResultSet* result =  dbHelper->SelectQuerySTMT(query);
 
-	v.push_back("----------이전 채팅----------");
+	v.push_back("--------------------이전 채팅---------------------");
 
 	while (result->next()) {
 		v.push_back(result->getString(1));
