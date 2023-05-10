@@ -154,14 +154,21 @@ void del_client(SOCKET_INFO sck, int thIdx) {
 
 
 void CheckThread() {
+
+
 	while (1) {
-		if (deletedThreadIdx.size() > 0) {
-			for (auto i : deletedThreadIdx) {
+		std::vector<int> v = deletedThreadIdx;
+		if (v.size() > 0 ) {
+			for (auto i : v) {
 				if (dicTh[i].joinable()) {
 					dicTh[i].join();
 					dicTh[i] = std::thread(add_client, i);
 				}
 			}
+
+			//for (int i = 0; i < v.size(); i++) {
+			//	deletedThreadIdx.erase(deletedThreadIdx.begin());
+			//}
 		}
 	}
 }

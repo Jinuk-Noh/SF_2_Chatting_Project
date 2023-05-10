@@ -1,6 +1,6 @@
 ﻿#pragma once
-#ifndef __TEMP_H__
-#define __TEMP_H__
+#ifndef __SIGNUP_H__
+#define __SIGNUP_H__
 #include <iostream>
 #include <cstring>
 #include <cstddef>
@@ -146,5 +146,5 @@ void SignUp() {
 		break;
 	}
 }
-#endif // !__TEMP_H__
+#endif // !__SIGNUP_H___
 

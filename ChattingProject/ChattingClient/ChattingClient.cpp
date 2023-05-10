@@ -17,9 +17,13 @@ int main() {
 		
 		//cout.setf(ios::right); (setw(10)
 		cout <<"--------------------------------------------------" << endl;
-		cout <<endl<< "1: 로그인" << endl;
+		if (userInfo.id == "")  cout << "1: 로그인" << endl;
 		cout << "2: 회원 가입" << endl;
 		cout << "3: 채팅 들어가기" << endl<<endl;
+		if (userInfo.id != "")
+		{
+			cout << "4: 로그아웃" << endl;
+		}
 		cout << "--------------------------------------------------"<<endl;
 
 
@@ -40,6 +44,10 @@ int main() {
 			}
 			Chatting();
 			break;
+		case 4:
+			userInfo.id = "";
+			userInfo.name = "";
+			system("cls");
 		default:
 			break;
 		}
@@ -50,12 +58,20 @@ string GetCommNum() {
 	string input = "";
 	do {
 		cin >> input;
-		if (input != "1" && input != "2" && input != "3") {
-			cout << "1 ~ 3 입력해주세요 : ";
+		if ((input != "1"
+			&& input != "2"
+			&& input != "3"
+			&& input != "4")
+			|| (input == "4" && userInfo.id == "")
+			|| (input == "1" && userInfo.id != "")) {
+			cout << "숫자를 입력해주세요 입력해주세요 : ";
 		}
-	} while (input != "1" 
+	} while ((input != "1"
 		&& input != "2"
-		&& input != "3");
+		&& input != "3"
+		&& input != "4")
+		|| (input == "4" && userInfo.id == "")
+		|| (input == "1" && userInfo.id != ""));
 
 	return input;
 }

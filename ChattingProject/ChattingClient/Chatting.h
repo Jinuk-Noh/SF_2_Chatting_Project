@@ -46,7 +46,7 @@ int Chatting() {
         chat_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP); // 
 
         SOCKADDR_IN client_addr = ConnectChattSck();
-
+        int tryCnt = 0;
         while (1) {
             if (!connect(chat_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
                 cout << "Server Connect" << endl;
@@ -56,6 +56,12 @@ int Chatting() {
                 break;
             }
             cout << "Connecting..." << endl;
+            if (tryCnt > 5) {
+                cout << "서버에 오류가 발생하였습니다. 재시도 해주십시오." << endl;
+                return 0;
+            }
+
+            tryCnt++;
         }
 
         std::thread th(chat_recv);
