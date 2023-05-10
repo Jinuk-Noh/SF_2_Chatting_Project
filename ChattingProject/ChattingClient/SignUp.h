@@ -102,9 +102,9 @@ void SignUp() {
 						continue;
 					}
 
+					system("cls");
 					while (1) {
 						int i = 0;
-						system("cls");
 						cout << "입력한 ID: " << id << endl;
 						cout << "사용할 비밀번호를 입력해주십시오: ";
 						pw=PwCheck(pw);
@@ -112,6 +112,7 @@ void SignUp() {
 						pw_1=PwCheck(pw_1);
 			
 						if (pw != pw_1) {
+							system("cls");
 							cout << endl << "입력한 비밀번호가 서로 다릅니다! \n다시 입력해주십시오." << endl << endl;
 						}
 						else {

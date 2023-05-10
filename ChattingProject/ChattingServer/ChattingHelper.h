@@ -29,19 +29,35 @@ struct SOCKET_INFO {
 		return sck == input.sck && content == input.content;
 	}
 };
+
 std::vector<string> SplitComm(string comm);
-void del_client(SOCKET_INFO sck, int thIdx);
+
+
 #pragma region ChattingSocket
+void server_init();
+
+void send_msg(const char* msg);
+void send_msg(const char* msg, string nickName);
+void send_chat_log(const char* msg, SOCKET sck);
+
+void recv_msg(int idx, int thIdx, SOCKET_INFO sck);
+void add_client(int thIdx);
+void del_client(SOCKET_INFO sck, int thIdx);
+
+void CheckThread();
+
+string MakeNickName(std::vector<string> v);
+
 std::vector<SOCKET_INFO> sck_list;
 SOCKET_INFO server_sock;
 int client_cnt = 0;
-std::thread th1[MAX_CLIENT];
+
+std::map<int, std::thread> dicTh;
+std::vector<int> deletedThreadIdx;
 
 string MakeNickName(std::vector<string> v) {
-
 	return v[1] + "(" + v[0] + ")";
 }
-
 
 void server_init() {
 	server_sock.sck = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -59,12 +75,14 @@ void server_init() {
 	cout << "Server On" << endl;
 }
 
+//전체 메시지
 void send_msg(const char* msg) {
 	for (int i = 0; i < client_cnt; i++) {
 		send(sck_list[i].sck, msg, MAX_SIZE, 0);
 	}
 }
 
+//수신자 제외 다른 사용자에게 채팅 전달
 void send_msg(const char* msg, string nickName) {
 	for (int i = 0; i < client_cnt; i++) {
 		if (sck_list[i].content == nickName) continue;
@@ -73,13 +91,9 @@ void send_msg(const char* msg, string nickName) {
 	}
 }
 
+//이전 채팅을 Client로 Send
 void send_chat_log(const char* msg, SOCKET sck) {
-	//for (int i = 0; i < sck_list.size(); i++) {
-	//	if (sck_list[i].sck == sck.sck) {
-			send(sck, msg, MAX_SIZE, 0);
-	//		break;
-	//	}
-	//}
+	send(sck, msg, MAX_SIZE, 0);
 }
 
 void recv_msg(int idx, int thIdx, SOCKET_INFO sck) {
@@ -141,8 +155,6 @@ void add_client(int thIdx) {
 	th.join();
 }
 
-std::vector<int> deletedThreadIdx;
-std::map<int, std::thread> dicTh;
 void del_client(SOCKET_INFO sck, int thIdx) {
 	//closesocket(sck_list[idx].sck);
 	closesocket(sck.sck);
@@ -152,10 +164,7 @@ void del_client(SOCKET_INFO sck, int thIdx) {
 	deletedThreadIdx.push_back(thIdx);
 }
 
-
 void CheckThread() {
-
-
 	while (1) {
 		std::vector<int> v = deletedThreadIdx;
 		if (v.size() > 0 ) {

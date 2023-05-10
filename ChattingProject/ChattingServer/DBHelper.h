@@ -11,9 +11,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
-const string server = "tcp://127.0.0.1:3306"; // �����ͺ��̽� �ּ�
-const string username = "root";//"chatUser"; // �����ͺ��̽� ������
-const string password = "1234"; // �����ͺ��̽� ���� ���й�ȣ
+const string server = "tcp://127.0.0.1:3306"; // 서버 주소
+const string username = "root";//"chatUser"; // 테이터베이스 사용자
+const string password = "1234"; // 데이터베이스 접속 비밀번호
 
 class DBHelper {
 private:
@@ -34,10 +34,10 @@ private:
 			exit(1);
 		}
 
-		// �����ͺ��̽� ����
+		// Database 설정
 		con->setSchema("ChattingDB");
 
-		// db �ѱ� ������ ���� ���� 
+		// db 한글 저장을 위한 셋팅
 		stmt = con->createStatement();
 		stmt->execute("set names euckr");
 		if (stmt) { delete stmt; stmt = nullptr; }
@@ -52,7 +52,7 @@ public:
 		return dbHelper;
 	}
 
-	//ó�� DB�� ���̺��� ������ �� ����
+	//처음 DB에 테이블을 생성할 때 사용(서버 처음 실행 시)
 	void InitTable() {
 
 		string query = "";
@@ -62,7 +62,7 @@ public:
 
 		//cout << "Creating table..." << endl;
 
-		//User Table ����
+		//User Table 생성
 		query = "CREATE TABLE IF NOT EXISTS User ( \
 			 id VARCHAR(20) PRIMARY KEY \
 			,pw VARCHAR(50) NOT NULL \
@@ -70,7 +70,7 @@ public:
 			);";
 		stmt->execute(query);
 
-		// Chatting Table ����
+		// Chatting Table 생성
 		query = "CREATE TABLE IF NOT EXISTS Chatting_Log("
 			"id VARCHAR(20) NOT NULL"
 			", content VARCHAR(400) NOT NULL"
@@ -99,14 +99,14 @@ public:
 		return result;
 	}
 
-	// PreparedStatement�� ? ���� �־������ؼ� ���ڷ� ���޹���
+	// PreparedStatement�� ? 값을 넣어줭해서 인자로 전달받음
 	sql::ResultSet* SelectQueryPSTMT(sql::PreparedStatement* pstmt) {
 		sql::ResultSet* result = pstmt->executeQuery();
 
 		return result;
 	}
 
-	// SelectQueryPSTMT���ڷ� �����ϱ� ���� ����
+	// SelectQueryPSTMT인자로 전달하기 위해 사용
 	sql::PreparedStatement* CreatePreoaredStatement(string query) {
 		sql::PreparedStatement* pstmt = con->prepareStatement(query);
 
@@ -116,7 +116,7 @@ public:
 
 DBHelper* DBHelper::dbHelper = nullptr;
 
-//Server ���� �� DBHelper �ڿ�����
+//Server 종료 시 DBHelper 자원해제
 void ReleaseDBHelper() {
 	DBHelper* dbHelper = DBHelper::CreateInstance();
 	if (dbHelper != nullptr) {

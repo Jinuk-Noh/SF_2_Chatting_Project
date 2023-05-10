@@ -16,7 +16,7 @@ int main() {
 	while (1) {
 		
 		//cout.setf(ios::right); (setw(10)
-		cout <<"--------------------------------------------------" << endl;
+		cout <<"--------------------------------------------------" << endl << endl;
 		if (userInfo.id == "")  cout << "1: 로그인" << endl;
 		cout << "2: 회원 가입" << endl;
 		cout << "3: 채팅 들어가기" << endl<<endl;
@@ -64,7 +64,7 @@ string GetCommNum() {
 			&& input != "4")
 			|| (input == "4" && userInfo.id == "")
 			|| (input == "1" && userInfo.id != "")) {
-			cout << "숫자를 입력해주세요 입력해주세요 : ";
+			cout << "다시 입력해주세요 : ";
 		}
 	} while ((input != "1"
 		&& input != "2"
