@@ -169,15 +169,12 @@ void CheckThread() {
 		
 		std::vector<int> v = deletedThreadIdx;
 		if (v.size() > 0 ) {
-			cout << "여기" << endl;
 			for (auto i : v) {
 				if (dicTh[i].joinable()) {
 					dicTh[i].join();
 					dicTh.erase(i);
-					cout << "지우고";
 					//dicTh[i] = std::thread(add_client, i);
 					dicTh.insert(make_pair(i, std::thread(add_client, i)));
-					cout << "다시 생성";
 				}
 			}
 		}
