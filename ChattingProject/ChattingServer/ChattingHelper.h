@@ -166,18 +166,24 @@ void del_client(SOCKET_INFO sck, int thIdx) {
 
 void CheckThread() {
 	while (1) {
+		
 		std::vector<int> v = deletedThreadIdx;
 		if (v.size() > 0 ) {
+			cout << "여기" << endl;
 			for (auto i : v) {
 				if (dicTh[i].joinable()) {
 					dicTh[i].join();
-					dicTh[i] = std::thread(add_client, i);
+					dicTh.erase(i);
+					cout << "지우고";
+					//dicTh[i] = std::thread(add_client, i);
+					dicTh.insert(make_pair(i, std::thread(add_client, i)));
+					cout << "다시 생성";
 				}
 			}
+		}
 
-			//for (int i = 0; i < v.size(); i++) {
-			//	deletedThreadIdx.erase(deletedThreadIdx.begin());
-			//}
+		for (auto i: v) {
+			deletedThreadIdx.erase(remove(deletedThreadIdx.begin(), deletedThreadIdx.end(), i), deletedThreadIdx.end());
 		}
 	}
 }
